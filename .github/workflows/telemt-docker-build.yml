@@ -54,10 +54,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3 <!--citation:4-->
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3 <!--citation:5-->
+        uses: docker/setup-buildx-action@v3
 
       - name: Compute upstream SHA + base image digests, compare with state
         id: check
@@ -87,7 +87,7 @@ jobs:
             | jq -r '.sha'
           )"
 
-          # manifest-list digest for tags (multi-arch): use buildx imagetools inspect <!--citation:9-->
+          # manifest-list digest for tags (multi-arch): use buildx imagetools inspect
           rust_digest="$(
             docker buildx imagetools inspect "${RUST_IMAGE}" --format '{{json .Manifest}}' \
             | jq -r '.digest'
@@ -126,7 +126,7 @@ jobs:
           steps.check.outputs.changed == 'true' ||
           github.event_name == 'push' ||
           (github.event_name == 'workflow_dispatch' && inputs.force == true)
-        uses: docker/build-push-action@v6 <!--citation:6-->
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
